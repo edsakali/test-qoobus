@@ -1,0 +1,24 @@
+@import "../../../../../assets/styles/Colors.scss";
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 460px;
+  width: 100%;
+
+  & > button {
+    max-width: 400px;
+    width: 100%;
+    margin-top: 16px;
+    background-color: $purple-3;
+    color: $white;
+  }
+  &--navigation {
+    display: flex;
+    align-items: center;
+    & > p {
+      padding-right: 4px;
+    }
+  }
+}
