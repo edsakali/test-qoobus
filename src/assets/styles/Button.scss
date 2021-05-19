@@ -1,0 +1,23 @@
+button {
+  height: 42px;
+  border-radius: 3px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: $dark;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Lato", sans-serif;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
