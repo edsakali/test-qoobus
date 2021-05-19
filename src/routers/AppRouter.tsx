@@ -4,15 +4,14 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { RegistrationPage } from "../modules/auth/registration/registration-page/RegistrationPage";
+import { SignUpPage } from "../modules/auth/signup/signup-page/SignUpPage";
 
 export const AppRouter = () => {
   return (
     <Router>
       <Switch>
         <Route path={"/"}>
-          {" "}
-          <RegistrationPage />
+          <SignUpPage />
         </Route>
         <Redirect from={"*"} to={"/"} />
       </Switch>

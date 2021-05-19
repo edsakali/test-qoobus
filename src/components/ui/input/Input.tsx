@@ -1,4 +1,4 @@
-import "./Input.Styles.scss";
+import styles from "./input.module.scss";
 
 interface Props {
   label: string;
@@ -6,7 +6,7 @@ interface Props {
   type: "text" | "password" | "email";
   onChange?: () => void;
   onBlur?: () => void;
-  valid?: boolean;
+  error?: boolean;
 }
 
 export const Input = ({
@@ -15,10 +15,10 @@ export const Input = ({
   type,
   onChange,
   onBlur,
-  valid,
+  error,
 }: Props) => {
   return (
-    <div className={"input"}>
+    <div className={styles.input}>
       {label && (
         <label>
           {label}
