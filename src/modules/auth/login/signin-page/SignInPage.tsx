@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { SignInForm } from "../signInForm/SignInForm";
 import styles from "./signInPage.module.scss";
@@ -7,9 +7,8 @@ import {
   isEmail,
   isStandartPassword,
 } from "../../../../core/helpers/validators";
-import { ApiServices } from "../../../../services/apiServices";
-import { useAppDispatch } from "../../../../redux/store/store";
 import { AppState } from "../../../../redux/store/store";
+import { signInAction } from "../../AuthActions";
 
 type Fields = "email" | "password";
 
@@ -52,7 +51,7 @@ const initialValues: FieldsState = {
 };
 
 export const SignInPage = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const { push } = useHistory();
   const { user } = useSelector((state: AppState) => state.auth);
   const [fieldsValues, setFieldsValues] = useState<FieldsState>(initialValues);
@@ -63,10 +62,15 @@ export const SignInPage = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    ApiServices.signIn({
-      email: fieldsValues.email?.value,
-      password: fieldsValues.password?.value,
-    });
+    const isValid =
+      fieldsValues.email?.touched && fieldsValues.password?.touched;
+    isValid &&
+      dispatch(
+        signInAction({
+          email: fieldsValues.email?.value,
+          password: fieldsValues.password?.value,
+        })
+      );
   };
 
   const handleChange = ({ target }: ChangeEvent<HTMLFormElement>) => {

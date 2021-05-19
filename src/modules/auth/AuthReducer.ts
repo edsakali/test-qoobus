@@ -7,8 +7,8 @@ export type AuthActionsTypes = {
 }
 
 export interface User {
-    lastName?: string;
     firstName?: string;
+    lastName?: string;
     email?: string;
     password?: string;
 }

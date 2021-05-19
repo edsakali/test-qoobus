@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { SignUpForm } from "../signUpForm/SignUpForm";
 import styles from "./signUpPage.module.scss";
@@ -8,8 +8,8 @@ import {
   isEmail,
   isStandartPassword,
 } from "../../../../core/helpers/validators";
-import { useAppDispatch } from "../../../../redux/store/store";
 import { AppState } from "../../../../redux/store/store";
+import { signUpAction } from "../../AuthActions";
 
 type Fields =
   | "firstName"
@@ -81,7 +81,7 @@ const initialValues: FieldsState = {
 };
 
 export const SignUpPage = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const { push } = useHistory();
   const { user } = useSelector((state: AppState) => state.auth);
   const [fieldsValues, setFieldsValues] = useState<FieldsState>(initialValues);
@@ -92,7 +92,21 @@ export const SignUpPage = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // ApiServices.signUp(state);
+    const isValid =
+      fieldsValues.firstName?.touched &&
+      fieldsValues.lastName?.touched &&
+      fieldsValues.email?.touched &&
+      fieldsValues.password?.touched &&
+      fieldsValues.confirmPassword?.touched;
+    isValid &&
+      dispatch(
+        signUpAction({
+          firstName: fieldsValues.firstName?.value,
+          lastName: fieldsValues.lastName?.value,
+          email: fieldsValues.email?.value,
+          password: fieldsValues.password?.value,
+        })
+      );
   };
 
   const handleChange = ({ target }: ChangeEvent<HTMLFormElement>) => {
