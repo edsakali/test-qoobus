@@ -1,4 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { SignUpForm } from "../signUpForm/SignUpForm";
 import styles from "./signUpPage.module.scss";
 import {
@@ -6,6 +8,8 @@ import {
   isEmail,
   isStandartPassword,
 } from "../../../../core/helpers/validators";
+import { useAppDispatch } from "../../../../redux/store/store";
+import { AppState } from "../../../../redux/store/store";
 
 type Fields =
   | "firstName"
@@ -77,14 +81,19 @@ const initialValues: FieldsState = {
 };
 
 export const SignUpPage = () => {
+  const dispatch = useAppDispatch();
+  const { push } = useHistory();
+  const { user } = useSelector((state: AppState) => state.auth);
   const [fieldsValues, setFieldsValues] = useState<FieldsState>(initialValues);
+
+  useEffect(() => {
+    user && push("/");
+  }, [user, push]);
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     // ApiServices.signUp(state);
   };
-
-  //TODO Пробросить колбэк
 
   const handleChange = ({ target }: ChangeEvent<HTMLFormElement>) => {
     setFieldsValues((prevState) => ({

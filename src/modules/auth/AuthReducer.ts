@@ -1,23 +1,24 @@
-const SET_USER = "SET_USER"
-const LOG_OUT = "LOG_OUT"
+export const SET_USER = "SET_USER"
+export const LOG_OUT = "LOG_OUT"
 
-type AuthActionsTypes = {
+export type AuthActionsTypes = {
     type: typeof SET_USER | typeof LOG_OUT;
-    payload: User
+    payload?: User
 }
 
 export interface User {
-    lastName: string;
-    firstName: string;
-    email: string;
+    lastName?: string;
+    firstName?: string;
+    email?: string;
+    password?: string;
 }
 
 interface AuthState {
-user: User | null;
+user?: User | null;
 }
 
 const initialState: AuthState = {
-    user: null
+    user: null,
 }
 
 export const authReducer = (state=initialState, action:AuthActionsTypes): AuthState => {

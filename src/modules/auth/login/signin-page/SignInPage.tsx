@@ -1,11 +1,15 @@
-import React, { ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { SignInForm } from "../signInForm/SignInForm";
 import styles from "./signInPage.module.scss";
 import {
   isEmail,
   isStandartPassword,
 } from "../../../../core/helpers/validators";
-import { useState } from "react";
+import { ApiServices } from "../../../../services/apiServices";
+import { useAppDispatch } from "../../../../redux/store/store";
+import { AppState } from "../../../../redux/store/store";
 
 type Fields = "email" | "password";
 
@@ -48,14 +52,22 @@ const initialValues: FieldsState = {
 };
 
 export const SignInPage = () => {
+  const dispatch = useAppDispatch();
+  const { push } = useHistory();
+  const { user } = useSelector((state: AppState) => state.auth);
   const [fieldsValues, setFieldsValues] = useState<FieldsState>(initialValues);
+
+  useEffect(() => {
+    user && push("/");
+  }, [user, push]);
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // ApiServices.signUp(state);
+    ApiServices.signIn({
+      email: fieldsValues.email?.value,
+      password: fieldsValues.password?.value,
+    });
   };
-
-  //TODO Пробросить колбэк
 
   const handleChange = ({ target }: ChangeEvent<HTMLFormElement>) => {
     setFieldsValues((prevState) => ({
