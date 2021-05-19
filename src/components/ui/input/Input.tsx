@@ -4,19 +4,11 @@ interface Props {
   label: string;
   name: string;
   type: "text" | "password" | "email";
-  onChange?: () => void;
-  onBlur?: () => void;
   error?: boolean;
+  errorMessage?: string;
 }
 
-export const Input = ({
-  label,
-  name,
-  type,
-  onChange,
-  onBlur,
-  error,
-}: Props) => {
+export const Input = ({ label, name, type, error, errorMessage }: Props) => {
   return (
     <div className={styles.input}>
       {label && (
@@ -25,7 +17,8 @@ export const Input = ({
           <span>*</span>
         </label>
       )}
-      <input type={type} name={name} onChange={onChange} />
+      <input type={type} name={name} />
+      {error ? <p className={styles.errorMessage}>{errorMessage}</p> : null}
     </div>
   );
 };
