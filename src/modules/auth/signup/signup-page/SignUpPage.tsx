@@ -92,13 +92,20 @@ export const SignUpPage = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isValid =
+    const touched =
       fieldsValues.firstName?.touched &&
       fieldsValues.lastName?.touched &&
       fieldsValues.email?.touched &&
       fieldsValues.password?.touched &&
       fieldsValues.confirmPassword?.touched;
-    isValid &&
+    const isValid =
+      fieldsValues.firstName?.isValid &&
+      fieldsValues?.lastName?.isValid &&
+      fieldsValues.email?.isValid &&
+      fieldsValues.password?.isValid &&
+      fieldsValues.confirmPassword?.isValid;
+    const checkValid = touched && isValid;
+    checkValid &&
       dispatch(
         signUpAction({
           firstName: fieldsValues.firstName?.value,
