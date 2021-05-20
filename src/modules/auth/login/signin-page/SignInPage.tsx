@@ -62,9 +62,12 @@ export const SignInPage = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isValid =
+    const touched =
       fieldsValues.email?.touched && fieldsValues.password?.touched;
-    isValid &&
+    const isValid =
+      fieldsValues.email?.isValid && fieldsValues.password?.isValid;
+    const checkValid = touched && isValid;
+    checkValid &&
       dispatch(
         signInAction({
           email: fieldsValues.email?.value,
