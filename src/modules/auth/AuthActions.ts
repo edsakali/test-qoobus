@@ -5,19 +5,37 @@ import {ApiServices} from '../../services/apiServices'
 
 
 
-export const signInAction = (params: User) => (dispatch: AppDispatch)=> {
-    const currentUser = ApiServices.signIn(params)
-    const {firstName, lastName, email} = currentUser
-    
-    if(currentUser){
-        return dispatch(setUser({firstName, lastName, email}))
-    }
+
+export const signIn = async (params: Pick<User, 'email' | 'password'>) => {
+  const promise = new Promise<Pick<User, 'firstName' | 'lastName' | 'email'>>((resolve) => {
+      setTimeout(() => {
+          const result= ApiServices.signIn(params);
+          resolve(result);
+      }, 1000);
+  });
+  
+  return await promise;
+}
+export const signInAction = (params: User) => async (dispatch: AppDispatch) => {
+ const currentUser = await signIn(params);
+const {firstName, lastName, email} = currentUser
+  dispatch(setUser({firstName, lastName, email}));
 }
 
-export const signUpAction = (params: User) => (dispatch: AppDispatch) => {
+
+export const signUp = async (params: User) => {
+  const promise = new Promise<void>((resolve) => {
+      setTimeout(() => {
+          ApiServices.signUp(params);
+          resolve();
+      }, 1000);
+  });
+  return await promise;
+}
+export const signUpAction = (params: User) => async (dispatch: AppDispatch) => {
   const {firstName, lastName, email} = params
-    ApiServices.signUp(params)
-        dispatch(setUser({firstName, lastName, email}))
+  await signUp(params);
+  dispatch(setUser({firstName, lastName, email}));
 }
 
 const setUser = (params: User):AuthActionsTypes => {
