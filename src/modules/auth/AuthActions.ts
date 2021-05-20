@@ -7,14 +7,17 @@ import {ApiServices} from '../../services/apiServices'
 
 export const signInAction = (params: User) => (dispatch: AppDispatch)=> {
     const currentUser = ApiServices.signIn(params)
+    const {firstName, lastName, email} = currentUser
+    
     if(currentUser){
-        return dispatch(setUser(currentUser))
+        return dispatch(setUser({firstName, lastName, email}))
     }
 }
 
 export const signUpAction = (params: User) => (dispatch: AppDispatch) => {
+  const {firstName, lastName, email} = params
     ApiServices.signUp(params)
-        dispatch(setUser(params))
+        dispatch(setUser({firstName, lastName, email}))
 }
 
 const setUser = (params: User):AuthActionsTypes => {
