@@ -6,13 +6,21 @@ export class ApiServices {
     
     static signIn = ({email, password}: User)=>{
       const users = localStorage.getItem('users');
+      
       if(!users){
-        return;
+        throw new Error('User with the specified login / password was not found!')
       }
-      const userList = JSON.parse(users);
+
+      const userList = JSON.parse(users) as User[];
+
       const currentUser = userList.find((user: User)=> user.email === email);
+
+      if(!currentUser){
+        throw new Error('User with the specified login was not found!')
+      }
+      
       if(currentUser.password !== password){
-         return; 
+        throw new Error('User with the specified password was not found!')
       }
       return currentUser;
     }

@@ -9,6 +9,7 @@ import {
 } from "../../../../core/helpers/validators";
 import { AppState } from "../../../../redux/store/store";
 import { signInAction } from "../../AuthActions";
+import { notification } from "../../../../core/helpers/notification";
 
 type Fields = "email" | "password";
 
@@ -72,6 +73,7 @@ export const SignInPage = () => {
         signInAction({
           email: fieldsValues.email?.value,
           password: fieldsValues.password?.value,
+          notificationError: (error)=> {notification('error',error)}
         })
       );
   };

@@ -3,23 +3,31 @@ import {AuthActionsTypes, User} from './AuthReducer'
 import {AppDispatch} from '../../redux/store/store'
 import {ApiServices} from '../../services/apiServices'
 
+interface SignInParams extends Partial<Pick<User,'email' |'password'>> {
+notificationError: (error: string)=> void;
+}
 
-
-
-export const signIn = async (params: Pick<User, 'email' | 'password'>) => {
+export const signIn = async (params: SignInParams) => {
   const promise = new Promise<Pick<User, 'firstName' | 'lastName' | 'email'>>((resolve) => {
       setTimeout(() => {
-          const result= ApiServices.signIn(params);
-          resolve(result);
+        try {
+          const{email,password} = params
+          const result = ApiServices.signIn({email, password});
+          if (result) {
+            resolve(result);
+          }
+        } catch (error) {
+          params.notificationError(error.message)
+        }
       }, 1000);
   });
   
   return await promise;
 }
-export const signInAction = (params: User) => async (dispatch: AppDispatch) => {
- const currentUser = await signIn(params);
-const {firstName, lastName, email} = currentUser
-  dispatch(setUser({firstName, lastName, email}));
+export const signInAction = (params: SignInParams) => async (dispatch: AppDispatch) => {
+    const currentUser = await signIn(params);
+    const {firstName, lastName, email} = currentUser;
+      dispatch(setUser({firstName, lastName, email}))
 }
 
 
