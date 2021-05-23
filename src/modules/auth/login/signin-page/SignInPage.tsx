@@ -9,6 +9,7 @@ import {
 } from "../../../../core/helpers/validators";
 import { AppState } from "../../../../redux/store/store";
 import { signInAction } from "../../AuthActions";
+import { notification } from "../../../../core/helpers/notification";
 
 type Fields = "email" | "password";
 
@@ -62,6 +63,14 @@ export const SignInPage = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      !fieldsValues.email?.value ||
+      !fieldsValues.password?.value
+    ) {
+      return;
+    }
+
     const touched =
       fieldsValues.email?.touched && fieldsValues.password?.touched;
     const isValid =
@@ -72,6 +81,7 @@ export const SignInPage = () => {
         signInAction({
           email: fieldsValues.email?.value,
           password: fieldsValues.password?.value,
+          notificationError: (error)=> {notification('error',error)}
         })
       );
   };
