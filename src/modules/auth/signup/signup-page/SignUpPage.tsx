@@ -92,12 +92,23 @@ export const SignUpPage = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (
+      !fieldsValues.firstName ||
+      !fieldsValues.lastName?.value ||
+      !fieldsValues.email?.value ||
+      !fieldsValues.password?.value
+    ) {
+      return;
+    }
+    
     const touched =
       fieldsValues.firstName?.touched &&
       fieldsValues.lastName?.touched &&
       fieldsValues.email?.touched &&
       fieldsValues.password?.touched &&
       fieldsValues.confirmPassword?.touched;
+
     const isValid =
       fieldsValues.firstName?.isValid &&
       fieldsValues?.lastName?.isValid &&
@@ -105,13 +116,14 @@ export const SignUpPage = () => {
       fieldsValues.password?.isValid &&
       fieldsValues.confirmPassword?.isValid;
     const checkValid = touched && isValid;
+
     checkValid &&
       dispatch(
         signUpAction({
-          firstName: fieldsValues.firstName?.value,
-          lastName: fieldsValues.lastName?.value,
-          email: fieldsValues.email?.value,
-          password: fieldsValues.password?.value,
+          firstName: fieldsValues.firstName.value,
+          lastName: fieldsValues.lastName.value,
+          email: fieldsValues.email.value,
+          password: fieldsValues.password.value,
         })
       );
   };

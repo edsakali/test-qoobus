@@ -63,6 +63,14 @@ export const SignInPage = () => {
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      !fieldsValues.email?.value ||
+      !fieldsValues.password?.value
+    ) {
+      return;
+    }
+
     const touched =
       fieldsValues.email?.touched && fieldsValues.password?.touched;
     const isValid =
